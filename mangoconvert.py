@@ -1,6 +1,6 @@
 """
 Mango CLI Tools
-Copyright (C) 2019  Alex Fence
+Copyright (C) 2019, 2020  Alex Fence
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -28,8 +28,9 @@ from mangofmt import MangoFile, CompressionType, MangoImage
 
 
 def natural_sort(l):
-    convert = lambda text: int(text) if text.isdigit() else text.lower()
-    alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
+    def convert(text): return int(text) if text.isdigit() else text.lower()
+    def alphanum_key(key): return [convert(c)
+                                   for c in re.split('([0-9]+)', key)]
     return sorted(l, key=alphanum_key)
 
 # ----------------------------------------------------------------------------
@@ -111,10 +112,12 @@ class CbzFormat(Format, ConvertFrom, ConvertTo):
         with zipfile.ZipFile(outfile, mode="w") as zip_file:
             for i in range(0, mangofile.image_count):
                 img = mangofile.get_image(i)
-                img_path = "/tmp/" + self.hash + "/" + os.path.basename(img.meta_data.filename)
+                img_path = "/tmp/" + self.hash + "/" + \
+                    os.path.basename(img.meta_data.filename)
                 # save image and add it to the zip
                 img.save(img_path)
-                zip_file.write(img_path, os.path.basename(img.meta_data.filename))
+                zip_file.write(img_path, os.path.basename(
+                    img.meta_data.filename))
 
         rmtree("/tmp/" + self.hash)
 
@@ -129,7 +132,8 @@ class CbzFormat(Format, ConvertFrom, ConvertTo):
             zip = zipfile.ZipFile(path)
             names = zip.namelist()
             # remove files with file traversal
-            names = list(filter(lambda x: not x.startswith("/") and "../" not in x, names))
+            names = list(filter(lambda x: not x.startswith(
+                "/") and "../" not in x, names))
 
             zip.extractall(path="/tmp/" + self.hash, members=names)
             zip.close()

@@ -1,6 +1,6 @@
 """
 Mango CLI Tools
-Copyright (C) 2019  Alex Fence
+Copyright (C) 2019, 2020 Alex Fence
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -37,11 +37,11 @@ def validate_key(meta_key, value):
         Args:
             meta_key (str): The key it should be written to
             value (var): The Value to be written
-       
+
         Returns:
             bool: True if valid, False otherwise. 
     """
-    string_keys = ["title", "author", "publisher", "source", "translation"]   
+    string_keys = ["title", "author", "publisher", "source", "translation"]
     num_keys = ["volume", "chapter", "year"]
 
     if meta_key in string_keys:
@@ -54,7 +54,7 @@ def validate_key(meta_key, value):
         return False
 
 
-validate_str = lambda x: isinstance(x, str)
+def validate_str(x): return isinstance(x, str)
 
 
 def validate_num(value):
@@ -84,7 +84,7 @@ def main(ctx, file):
 
 # the element function will be reused multiple times for each meta_key
 @click.command()
-# the value argument may have to be a string or an int, 
+# the value argument may have to be a string or an int,
 # depending on the meta_key, therefor we'll just expect a string
 @click.argument("value", nargs=1, required=False)
 @click.pass_context
@@ -98,7 +98,7 @@ def element(ctx, value):
     """
     mangofile = MangoFile.open(ctx.obj.file)
     meta = mangofile.meta_data
-    
+
     if value is None:
         current_value = getattr(meta, ctx.info_name)
         if current_value is not None:
@@ -111,7 +111,7 @@ def element(ctx, value):
                 value = int(value)
             elif ctx.info_name == "language":
                 value = Language(value.upper())
-            
+
             setattr(meta, ctx.info_name, value)
             mangofile.save(ctx.obj.file)
         else:
@@ -123,11 +123,10 @@ def element(ctx, value):
 for key in meta_keys:
     # make a copy of element
     # if you don't all command will have the same help string
-    # because there will actually only be one instance of the function element 
+    # because there will actually only be one instance of the function element
     # inside the main command group
     main.add_command(copy(element), key)
-    
+
     # set the name of the key in the help text
     cmd = main.get_command(click.Context(main), key)
     cmd.help = cmd.help.format(key)
-
