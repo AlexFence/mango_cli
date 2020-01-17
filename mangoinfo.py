@@ -106,3 +106,7 @@ def main(file, verbose, show_images):
             click.echo("{:12}  {:12}: {:<12}".format("", pair.key, pair.value))
         elif pair is None:
             click.echo(" ")
+
+
+if __name__ == "__main__":
+    main()

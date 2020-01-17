@@ -130,3 +130,6 @@ for key in meta_keys:
     # set the name of the key in the help text
     cmd = main.get_command(click.Context(main), key)
     cmd.help = cmd.help.format(key)
+
+if __name__ == "__main__":
+    main()

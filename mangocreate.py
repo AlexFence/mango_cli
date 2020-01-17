@@ -59,3 +59,7 @@ def main(filename, json, bson, cbor):
     except PermissionError:
         click.echo("Permission denied: could not create " + filename)
         exit(4)
+
+
+if __name__ == "__main__":
+    main()

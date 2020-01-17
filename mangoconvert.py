@@ -182,3 +182,6 @@ def converter(ctx, path):
 
 for file_format in formats:
     file_format.register(copy(converter), from_group, to_group)
+
+if __name__ == "__main__":
+    mango_convert()
