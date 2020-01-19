@@ -10,7 +10,8 @@ setup(name="mango_cli",
           "mangoconvert",
           "mangoinfo",
           "mangometa",
-          "mangoview"
+          "mangoview",
+          "mangoadd",
       ],
       entry_points={
           'console_scripts': [
@@ -19,5 +20,6 @@ setup(name="mango_cli",
               "mangoinfo=mangoinfo:main",
               "mangometa=mangometa:main",
               "mangoview=mangoview:main",
+              "mangoadd=mangoadd:main",
           ]
       })
